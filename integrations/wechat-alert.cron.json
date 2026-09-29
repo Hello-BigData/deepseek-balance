@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 4,
+  "_comment": "Hana 宿主定时任务模板：每小时调用插件工具判定余额，命中阈值就经宿主 notify 投递到微信。studioId / sessionId / createdAt 等本机标识已剥离，这不是可直接导入的存档，而是字段 + 提示词的参照。创建方式见同目录 wechat-alert.md。",
+  "type": "cron",
+  "schedule": "0 * * * *",
+  "label": "DeepSeek API 可用余额预警（微信推送）",
+  "mode": "isolated",
+  "enabled": true,
+  "executionContext": {
+    "kind": "session_workspace",
+    "workspaceFolders": [],
+    "authorizedFolders": []
+  },
+  "prompt": "每轮执行两步，不要做多余的事：\n\n1) 调用工具 deepseek-balance_deepseek_balance_alert（无需参数）。它返回 JSON：due / alerting / total / threshold / text。\n\n2) 看 due：\n- due === true：调用 notify 工具把返回的 text 原文推送微信。参数：title=\"DeepSeek 余额预警\"，body=<返回的 text>，audience=\"owner\"，channels=[\"bridge_owner\"]，bridgePlatforms=[\"wechat\"]。\n- due !== true：不发任何通知，也不发消息解释，本轮直接结束。",
+  "notifyHint": {
+    "tool": "notify",
+    "title": "DeepSeek 余额预警",
+    "audience": "owner",
+    "channels": ["bridge_owner"],
+    "bridgePlatforms": ["wechat"],
+    "body": "<deepseek-balance_deepseek_balance_alert 返回的 text 原文>",
+    "swapPlatformsWith": ["wechat", "feishu", "dingtalk", "telegram", "qq"]
+  }
+}

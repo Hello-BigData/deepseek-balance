@@ -1,0 +1,24 @@
+# 运行态与本地快照：绝不入库（含插件数据目录快照、打包产物）
+backups/
+plugin-data/
+plugin-data-*/
+*.zip
+
+# 密钥与运行状态（源码目录里本不应出现，兜底忽略）
+state.json
+config.json
+diagnostics.log
+*.log
+
+# 临时/草稿
+_tmp*/
+_selfcheck-tmp.mjs
+*.tmp
+*.bak
+*.bak.*
+
+# 依赖与系统
+node_modules/
+.DS_Store
+Thumbs.db
+desktop.ini
